@@ -5,7 +5,7 @@ const decimalCommaRegex = /,/g;
 const decimalRegex = /\.|,/g;
 const decimalWithThousandSeparatorNumberRegex = /^(?!0+\.00)(?=.{1,9}(\.|$))(?!0(?!\.))\d{1,3}(,\d{3})*(\.\d+)?$/;
 
-function rationalizeAllPossibleSubNodes(expression) {
+export function rationalizeAllPossibleSubNodes(expression) {
   const tree = mathjs.parse(expression);
   const transformedTree = tree.transform(node => {
     try {
@@ -20,7 +20,7 @@ function rationalizeAllPossibleSubNodes(expression) {
   return transformedTree;
 }
 
-function prepareExpression(string, isLatex) {
+export function prepareExpression(string, isLatex) {
   let returnValue = string ? string.trim() : '';
 
   returnValue = returnValue.replace(decimalCommaRegex, '.');
@@ -34,7 +34,7 @@ function prepareExpression(string, isLatex) {
   return rationalizeAllPossibleSubNodes(returnValue);
 }
 
-function shouldRationalizeEntireTree(tree) {
+export function shouldRationalizeEntireTree(tree) {
   let shouldDoIt = true;
 
   // we need to iterate the entire tree to check for some conditions that might make rationalization impossible
