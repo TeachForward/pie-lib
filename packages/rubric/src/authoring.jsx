@@ -20,6 +20,7 @@ import debug from 'debug';
 import takeRight from 'lodash/takeRight';
 
 import range from 'lodash/range';
+
 const log = debug('pie-lib:rubric:authoring');
 
 const reorder = (list, startIndex, endIndex) => {
@@ -52,7 +53,7 @@ const MaxPoints = withStyles(theme => ({
       <Select
         value={value}
         onChange={e => onChange(e.target.value)}
-        input={<OutlinedInput labelWidth={80} />}
+        input={<OutlinedInput labelWidth={80}/>}
       >
         {range(1, max).map(v => (
           <MenuItem key={`${v}`} value={v}>
@@ -92,8 +93,8 @@ export const PointConfig = withStyles(theme => ({
         {pointsLabel}
       </Typography>
       <div className={classes.row}>
-        <DragIndicator className={classes.dragIndicator} />
-        <EditableHtml className={classes.editor} markup={content} onChange={props.onChange} />
+        <DragIndicator className={classes.dragIndicator}/>
+        <EditableHtml className={classes.editor} markup={content} onChange={props.onChange}/>
       </div>
     </div>
   );
@@ -169,7 +170,7 @@ export class RawAuthoring extends React.Component {
   };
 
   render() {
-    const { classes, className, value } = this.props;
+    const { classes, className, value, noPointsController } = this.props;
 
     if (value && Number.isFinite(value.maxPoints)) {
       // eslint-disable-next-line no-console
@@ -181,13 +182,15 @@ export class RawAuthoring extends React.Component {
         <Typography variant="h5" className={classes.rubricTitle}>
           Rubric
         </Typography>
-        <FormGroup row>
-          <MaxPoints max={10} value={value.points.length - 1} onChange={this.changeMaxPoints} />
-          <FormControlLabel
-            label="Exclude zeros"
-            control={<Checkbox checked={value.excludeZero} onChange={this.excludeZeros} />}
-          />
-        </FormGroup>
+        {!noPointsController && (
+          <FormGroup row>
+            <MaxPoints max={10} value={value.points.length - 1} onChange={this.changeMaxPoints}/>
+            <FormControlLabel
+              label="Exclude zeros"
+              control={<Checkbox checked={value.excludeZero} onChange={this.excludeZeros}/>}
+            />
+          </FormGroup>
+        )}
         <div className={classes.container}>
           <DragDropContext onDragEnd={this.dragEnd}>
             <Droppable droppableId="droppable">
@@ -256,7 +259,7 @@ const Reverse = props => {
   const onChange = value => {
     props.onChange({ ...value, points: Array.from(value.points).reverse() });
   };
-  return <StyledRawAuthoring value={value} onChange={onChange} />;
+  return <StyledRawAuthoring value={value} onChange={onChange} noPointsController={props.noPointsController}/>;
 };
 Reverse.propTypes = {
   value: RubricType,
