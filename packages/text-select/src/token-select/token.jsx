@@ -77,6 +77,7 @@ export default withStyles(theme => {
     token: {
       cursor: 'pointer',
       textIndent: 0,
+      display: 'initial',
       padding: theme.spacing.unit / 2,
       paddingRight: 0,
       transition: 'background-color 100ms ease-in'
